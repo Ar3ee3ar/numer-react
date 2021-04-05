@@ -1,0 +1,12 @@
+openapi: '3.0.2'
+info:
+  title: API Title
+  version: '1.0'
+servers:
+  - url: mongodb+srv://root:arzeezar123@cluster0.4iyye.mongodb.net/exam-numer
+paths:
+  /test:
+    get:
+      responses:
+        '200':
+          description: OK
