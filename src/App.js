@@ -13,6 +13,8 @@ import One_point_iteration from './pages/Root of Equation/One_point_iteration';
 import Newton_Raphson from './pages/Root of Equation/Newton_Raphson';
 import Secant from './pages/Root of Equation/Secant';
 
+jest.unmock("react-plotly.js");
+
 const { SubMenu } = Menu;
 const { Header, Content,Sider } = Layout;
 
