@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
 
-jest.unmock("react-plotly.js");
+jest.unmock("react-plotly");
   if (typeof window.URL.createObjectURL === 'undefined') {
   window.URL.createObjectURL = () => {
     // Do nothing
