@@ -1,4 +1,5 @@
 {
+  "homepage": "https://ar3ee3ar.github.io/numer-react/",
   "name": "react-sidebar",
   "version": "0.1.0",
   "private": true,
@@ -29,6 +30,8 @@
     "styled-components": "^5.1.0"
   },
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "main -d build",
     "start": "react-scripts --max_old_space_size=4096 start",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -50,6 +53,11 @@
     ]
   },
   "devDependencies": {
+<<<<<<< HEAD
+    "gh-pages": "^3.1.0",
     "nodemon": "^2.0.7"
+=======
+    "main": "^2.0.7"
+>>>>>>> main
   }
 }
