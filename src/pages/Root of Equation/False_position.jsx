@@ -1,6 +1,6 @@
 import React from 'react';
-import { Row, Col,Input ,Card,Button,Table} from 'antd';
-import {func,error} from '../../group_library/lib_use.js';
+import { Input ,Card,Button,Table} from 'antd';
+import {func} from '../../group_library/lib_use.js';
 import Graph from '../../components/Graph'
 import 'antd/dist/antd.css';
 import '../../style/screen.css'
@@ -174,7 +174,7 @@ class False_position extends React.Component{
                         </Card>}
                     </div>
                     <div className="col">
-                        {this.state.showGraph && <Graph fx={fx} title="False position Method" xl={xl} xr={xr} />}
+                        {this.state.showGraph && <Graph fx={fx} title="False position Method" />}
                     </div>
                 </div>
                 <div className="row">

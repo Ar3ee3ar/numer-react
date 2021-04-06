@@ -1,8 +1,8 @@
-import React,{Component,useState,useEffect} from 'react';
-import { BrowserRouter as Router, Route, Link, Switch,NavLink } from 'react-router-dom';
+import React from 'react';
+import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom';
 import { Layout, Menu } from 'antd';
 import 'antd/dist/antd.css';
-import { Drawer, Button, Radio, Space } from 'antd';
+import { Drawer, Space } from 'antd';
 import './style/screen.css'
 import { BarsOutlined } from '@ant-design/icons';
 
@@ -45,7 +45,7 @@ class Routes extends React.Component {
   };
 
   render() {
-    const { placement, visible,windowWidth} = this.state;
+    const { placement, visible} = this.state;
     
     return (
       <>

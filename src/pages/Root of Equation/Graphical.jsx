@@ -1,5 +1,5 @@
 import React from 'react';
-import { Row, Col,Input ,Card,Button,Table} from 'antd';
+import {Input ,Card,Button,Table} from 'antd';
 import {func} from '../../group_library/lib_use.js';
 import Graph from '../../components/Graph'
 import 'antd/dist/antd.css';
@@ -118,7 +118,7 @@ class Graphical extends React.Component{
                         </Card>}
                     </div>
                     <div className="col">
-                        {this.state.showGraph && <Graph fx={fx} title="Graphical Method" start={start} end={end} />}
+                        {this.state.showGraph && <Graph fx={fx} title="Graphical Method"/>}
                     </div>
                 </div>
                 <div className="row">

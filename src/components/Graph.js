@@ -4,7 +4,7 @@ import Plot from 'react-plotly.js';
 
 export default class Graph extends Component {
     render() {
-        let { fx, title,xl,xr } = this.props;
+        let { fx, title} = this.props;
         return (
             <Plot
                 data={[
