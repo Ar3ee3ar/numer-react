@@ -13,8 +13,6 @@ import One_point_iteration from './pages/Root of Equation/One_point_iteration';
 import Newton_Raphson from './pages/Root of Equation/Newton_Raphson';
 import Secant from './pages/Root of Equation/Secant';
 
-jest.unmock("react-plotly.js");
-
 const { SubMenu } = Menu;
 const { Header, Content,Sider } = Layout;
 
@@ -54,10 +52,10 @@ class Routes extends React.Component {
       <Router>
         <Layout style={{background:"#fff"}}>
           <Header className="hideOnDesktop" style={{ position: 'fixed', zIndex: 1, width: '100%' ,padding:'0 16px'}}>
-            <space>
+            <Space>
               <BarsOutlined style={{color:'white',fontSize:'20px'}} onClick={this.showDrawer}/>
               <span style={{color: 'white',marginLeft:'10px',fontSize:'20px'}}>Numerical method</span>
-            </space>
+            </Space>
           </Header>
           <Header className="hideOnMobile" style={{ position: 'fixed', zIndex: 1, width: '100%' ,padding:'0 16px'}}>
             <h2 style={{color: 'white',marginLeft:'10px'}}>Numerical method</h2>
