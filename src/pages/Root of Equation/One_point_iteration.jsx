@@ -1,5 +1,5 @@
 import React from 'react';
-import { Row, Col,Input ,Card,Button,Table} from 'antd';
+import {Input ,Card,Button,Table} from 'antd';
 import {func} from '../../group_library/lib_use.js';
 import Graph from '../../components/Graph'
 import 'antd/dist/antd.css';
@@ -64,7 +64,7 @@ class One_point_iteration extends React.Component{
           data['x'][count] = Xpre;
             data['error'][count] = Math.abs((X-Xpre)/X);
             count++;
-            if(Xpre == X){
+            if(Xpre === X){
                 //console.log(X)
                 break;
             }
@@ -128,7 +128,7 @@ class One_point_iteration extends React.Component{
                         </Card>}
                     </div>
                     <div className="col">
-                        {this.state.showGraph && <Graph fx={fx} title="One point iteration Method" x={Xpre} />}
+                        {this.state.showGraph && <Graph fx={fx} title="One point iteration Method"/>}
                     </div>
                 </div>
                 <div className="row">

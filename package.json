@@ -15,6 +15,7 @@
     "bootstrap": "^4.6.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",
+    "gh-pages": "^3.1.0",
     "mathjs": "^9.2.0",
     "mongodb": "^3.6.5",
     "mongoose": "^5.12.3",
@@ -25,15 +26,15 @@
     "react-plotly.js": "^2.5.1",
     "react-router-breadcrumbs-hoc": "^3.3.1",
     "react-router-dom": "^5.1.2",
-    "react-scripts": "3.4.1",
+    "react-scripts": "^3.4.1",
     "react-sticky-box": "^0.9.3",
     "styled-components": "^5.1.0"
   },
   "scripts": {
     "predeploy": "npm run build",
-    "deploy": "main -d build",
+    "deploy": "gh-pages -d build",
     "start": "react-scripts --max_old_space_size=4096 start",
-    "build": "react-scripts build",
+    "build": "react-scripts --max_old_space_size=8192 build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -53,11 +54,6 @@
     ]
   },
   "devDependencies": {
-<<<<<<< HEAD
-    "gh-pages": "^3.1.0",
     "nodemon": "^2.0.7"
-=======
-    "main": "^2.0.7"
->>>>>>> main
   }
 }

@@ -1,8 +1,8 @@
-import React,{Component,useState,useEffect} from 'react';
-import { BrowserRouter as Router, Route, Link, Switch,NavLink } from 'react-router-dom';
+import React from 'react';
+import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom';
 import { Layout, Menu } from 'antd';
 import 'antd/dist/antd.css';
-import { Drawer, Button, Radio, Space } from 'antd';
+import { Drawer, Space } from 'antd';
 import './style/screen.css'
 import { BarsOutlined } from '@ant-design/icons';
 
@@ -45,17 +45,17 @@ class Routes extends React.Component {
   };
 
   render() {
-    const { placement, visible,windowWidth} = this.state;
+    const { placement, visible} = this.state;
     
     return (
       <>
       <Router>
         <Layout style={{background:"#fff"}}>
           <Header className="hideOnDesktop" style={{ position: 'fixed', zIndex: 1, width: '100%' ,padding:'0 16px'}}>
-            <space>
+            <Space>
               <BarsOutlined style={{color:'white',fontSize:'20px'}} onClick={this.showDrawer}/>
               <span style={{color: 'white',marginLeft:'10px',fontSize:'20px'}}>Numerical method</span>
-            </space>
+            </Space>
           </Header>
           <Header className="hideOnMobile" style={{ position: 'fixed', zIndex: 1, width: '100%' ,padding:'0 16px'}}>
             <h2 style={{color: 'white',marginLeft:'10px'}}>Numerical method</h2>

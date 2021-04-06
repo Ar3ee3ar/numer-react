@@ -1,10 +1,10 @@
 import React from 'react';
-import { Row, Col,Input ,Card,Button,Table} from 'antd';
+import { Input ,Card,Button,Table} from 'antd';
 import {func,funcDiff} from '../../group_library/lib_use.js';
 import Graph from '../../components/Graph'
 import 'antd/dist/antd.css';
 import '../../style/screen.css'
-import {compile, derivative} from 'mathjs'
+import { derivative} from 'mathjs'
 
 
 const InputStyle = {
