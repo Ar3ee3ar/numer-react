@@ -20,7 +20,9 @@ const example = new Schema(
         array_y:{type:[Number],required:false},
         point:{type:[Number],required:false},
         m:{type: Number, required:false},
-        array_x_multi:{type:[[Number]],required:false}
+        array_x_multi:{type:[[Number]],required:false},
+        x_point:{type:Number,required:false},
+        x_multi_target:{type:[Number],required:false},
     }, { collection : 'data' }
 )
 console.log("out-model")

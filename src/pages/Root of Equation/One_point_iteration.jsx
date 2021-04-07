@@ -4,6 +4,7 @@ import {func} from '../../group_library/lib_use.js';
 import Graph from '../../components/Graph'
 import 'antd/dist/antd.css';
 import '../../style/screen.css'
+import api from '../../api'
 
 
 const InputStyle = {
@@ -104,9 +105,19 @@ class One_point_iteration extends React.Component{
                 showGraph: false
             });
         }
+
+    getExam=(e)=>{
+        api.getExamByMethod("one point iteration").then(db=>{
+            this.setState({
+                fx : db.data.data.fx,
+                Xpre : db.data.data.x,
+            })
+        })
+    }
     
     render() {
         let { fx, Xpre } = this.state;
+        console.log(this.state.Xpre)
         return (
             <div className="calBody">
                 <div className="row">
@@ -119,12 +130,13 @@ class One_point_iteration extends React.Component{
                             id="inputCard"
                         >
                             <h2 style={{color:"white"}}>f(x)</h2><Input size="large" name="fx" value= {this.state.fx} style={InputStyle} disabled = {(this.state.disabled)? "disabled" : ""}></Input>
-                            <h2 style={{color:"white"}}>X</h2><Input size="large" name="Xpre" style={InputStyle} ></Input><br/><br/>
+                            <h2 style={{color:"white"}}>X</h2><Input size="large" name="Xpre" value= {this.state.Xpre} style={InputStyle} ></Input><br/><br/>
                             <Button id="submit_button" onClick={
                                 () => this.one_point_iteration(parseFloat(Xpre))
                             }
-                                style={{ background: "white", color: "#001529" }}>Submit</Button>
-                            {this.state.disabled&&<Button onClick={this.resetField} style={{float:'right'}}>Reset</Button>}
+                                style={{ background: "#4caf12", color: "white" }}>Submit</Button>
+                            <Button id="submit_exam" onClick={this.getExam} style={{ background: "white", color: "#001529" , float:"right" }}>Example</Button>
+                            {this.state.disabled&&<Button onClick={this.resetField} style={{ background:"red",color:"white", marginLeft:"1%"}}>Reset</Button>}
                         </Card>}
                     </div>
                     <div className="col">

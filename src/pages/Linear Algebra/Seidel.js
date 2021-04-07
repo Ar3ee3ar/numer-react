@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import {Card, Input, Button, Table} from 'antd';
-import {error} from '../../group_library/lib_use.js';
 import '../../style/screen.css'
 import 'antd/dist/antd.css';
+import api from '../../api'
 
 const InputStyle = {
     background: "white",
@@ -27,9 +27,13 @@ class Seidel extends Component {
         this.state = {
             row: 0,
             column: 0,
+            a_value: [],
+            b_value: [],
+            initial: [],
             showDimentionForm : true,
             showMatrixForm: false,
-            showOutputCard: false
+            showOutputCard: false,
+            CallExam: false
         }
         this.handleChange = this.handleChange.bind(this);
         this.seidel = this.seidel.bind(this);
@@ -39,7 +43,7 @@ class Seidel extends Component {
   
     seidel(n) {
         this.initMatrix();
-        x = new Array(n);
+        console.log(x)
         var xold
         epsilon = new Array(n);
         do {
@@ -49,12 +53,14 @@ class Seidel extends Component {
                 for (var j=0 ; j<n ; j++) {
                     if (i !== j) { //else i == j That is a divide number
                         sum = sum + A[i][j]*x[j];
+                        console.log(sum)
                     }
                 }
                 x[i] = (B[i] - sum)/A[i][i]; //update x[i]
                 
-            }        
-        } while(error(x, xold)); //if true , continue next iteration
+            }     
+            console.log("gonna go to error")   
+        } while(this.error(x, xold)); //if true , continue next iteration
         
         
         for (i=0 ; i<x.length ; i++) {
@@ -71,7 +77,9 @@ class Seidel extends Component {
         for (var i=0 ; i<xnew.length ; i++) {
             epsilon[i] = Math.abs((xnew[i]-xold[i]) / xnew[i])
         }
+        console.log("currently in error")
         this.appendTable(x, epsilon);
+        console.log("exit appendTable")
         for (i=0 ; i<epsilon.length ; i++) {
             if (epsilon[i] > 0.000001) {
                 return true;
@@ -99,7 +107,7 @@ class Seidel extends Component {
                     fontSize: "18px",
                     fontWeight: "bold"
                 }} 
-                id={"a"+i+""+j} key={"a"+i+""+j} placeholder={"a"+i+""+j} />)  
+                id={"a"+i+""+j} key={"a"+i+""+j} placeholder={(this.state.CallExam)?this.state.a_value[i-1][j-1]:("a"+i+""+j)} />)  
             }
             matrixA.push(<br/>)
             matrixB.push(<Input style={{
@@ -112,7 +120,7 @@ class Seidel extends Component {
                 fontSize: "18px",
                 fontWeight: "bold"
             }} 
-            id={"b"+i} key={"b"+i} placeholder={"b"+i} />)
+            id={"b"+i} key={"b"+i} placeholder={(this.state.CallExam)?this.state.b_value[i-1]:("b"+i)} />)
             matrixX.push(<Input style={{
                 width: "18%",
                 height: "50%", 
@@ -123,7 +131,7 @@ class Seidel extends Component {
                 fontSize: "18px",
                 fontWeight: "bold"
             }} 
-            id={"x"+i} key={"x"+i} placeholder={"x"+i} />)
+            id={"x"+i} key={"x"+i} placeholder={(this.state.CallExam)?this.state.initial[i-1]:"x"+i} />)
                 
             
         }
@@ -144,6 +152,7 @@ class Seidel extends Component {
             }
             B.push(parseFloat(document.getElementById("b"+(i+1)).value));
             x.push(parseFloat(document.getElementById("x"+(i+1)).value));
+            console.log(x)
         }
     }
     initialSchema(n) {
@@ -163,6 +172,7 @@ class Seidel extends Component {
         }
     }
     appendTable(x, error) {
+        console.log(x,error)
         var tag = ''
         tag += '{"iteration": ' + count++ + ',';
         for (var i=0 ; i<x.length ; i++) {
@@ -180,6 +190,21 @@ class Seidel extends Component {
             [event.target.name]: event.target.value
         });
     }
+
+    getExam=(e)=>{
+        api.getExamByMethod("gauss-seidel").then(db=>{
+            this.setState({
+                row : db.data.data.row,
+                column : db.data.data.column,
+                a_value : db.data.data.A,
+                b_value : db.data.data.B,
+                initial : db.data.data.initial,
+                CallExam : true
+            }
+            )
+        })
+    }
+
     render() {
         return(
             <div className="calBody">
@@ -193,13 +218,14 @@ class Seidel extends Component {
                         >
                             {this.state.showDimentionForm && 
                                 <div>
-                                    <h2 style={{color:"white"}}>Row</h2><Input size="large" name="row" style={InputStyle}></Input>
-                                    <h2 style={{color:"white"}}>Column</h2><Input size="large" name="column" style={InputStyle}></Input>
+                                    <h2 style={{color:"white"}}>Row</h2><Input size="large" name="row" value={this.state.row} style={InputStyle}></Input>
+                                    <h2 style={{color:"white"}}>Column</h2><Input size="large" name="column" value={this.state.column} style={InputStyle}></Input><br/><br/>
+                                    <Button id="submit_examInput" onClick={this.getExam} style={{ background: "white", color: "#001529" ,float:"left"}}>Example</Button>
                                     <Button id="dimention_button" onClick= {
                                         ()=>{this.createMatrix(this.state.row, this.state.column);
                                             this.initialSchema(this.state.row)}
                                         }  
-                                        style={{background: "#4caf50", color: "white", fontSize: "20px"}}>
+                                        style={{background: "#4caf12", color: "white", float:"right"}}>
                                         Submit
                                     </Button>
                                 </div> 
@@ -212,7 +238,7 @@ class Seidel extends Component {
                                     <h2 style={{color:"white"}}>Initial X<br/></h2>{matrixX}
                                     <Button 
                                         id="matrix_button"  
-                                        style={{background: "blue", color: "white", fontSize: "20px"}}
+                                        style={{background: "#4caf12", color: "white", float:"right"}}
                                         onClick={()=>this.seidel(parseInt(this.state.row))}>
                                         Submit
                                     </Button>
@@ -226,7 +252,7 @@ class Seidel extends Component {
                             <Card
                             title={"Output"}
                             bordered={true}
-                            style={{width: "100%", background: "#2196f3", color: "#FFFFFFFF" }}
+                            style={{width: "100%", background: "white", color: "#001529" }}
                             id="outputCard"
                             >
                                 <Table columns={columns} dataSource={dataInTable} bordered={true} bodyStyle={{fontWeight: "bold", fontSize: "18px", color: "black", overflowX: "scroll"}}

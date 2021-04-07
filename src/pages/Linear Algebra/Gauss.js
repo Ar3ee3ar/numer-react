@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Card, Input, Button } from 'antd';
 import '../../style/screen.css'
 import 'antd/dist/antd.css';
+import api from '../../api'
 
 const InputStyle = {
     background: "white",
@@ -19,9 +20,12 @@ class Gauss extends Component {
         this.state = {
             row: 0,
             column: 0,
+            a_value : [],
+            b_value:[],
             showDimentionForm: true,
             showMatrixForm: false,
-            showOutputCard: false
+            showOutputCard: false,
+            CanType: true
         }
         this.handleChange = this.handleChange.bind(this);
         this.gauss = this.gauss.bind(this);
@@ -69,6 +73,7 @@ class Gauss extends Component {
 
     }
     createMatrix(row, column) {
+        console.log(this.state.CanType)
         A = []
         B = []
         X = []
@@ -80,27 +85,27 @@ class Gauss extends Component {
                 matrixA.push(<Input style={{
                     width: "18%",
                     height: "50%",
-                    backgroundColor: "#06d9a0",
+                    backgroundColor: "white",
                     marginInlineEnd: "5%",
                     marginBlockEnd: "5%",
-                    color: "white",
+                    color: "black",
                     fontSize: "18px",
                     fontWeight: "bold"
                 }}
-                    id={"a" + i + "" + j} key={"a" + i + "" + j} placeholder={"a" + i + "" + j} />)
+                    id={"a" + i + "" + j} key={"a" + i + "" + j} placeholder={(this.state.CanType)? ("a"+i+""+j):this.state.a_value[i-1][j-1]}/>)
             }
             matrixA.push(<br />)
             matrixB.push(<Input style={{
                 width: "18%",
                 height: "50%",
-                backgroundColor: "black",
+                backgroundColor: "white",
                 marginInlineEnd: "5%",
                 marginBlockEnd: "5%",
-                color: "white",
+                color: "black",
                 fontSize: "18px",
                 fontWeight: "bold"
             }}
-                id={"b" + i} key={"b" + i} placeholder={"b" + i} />)
+                id={"b" + i} key={"b" + i} placeholder={(this.state.CanType)? ("b"+i):this.state.b_value[i-1]} />)
 
 
         }
@@ -127,27 +132,43 @@ class Gauss extends Component {
             [event.target.name]: event.target.value
         });
     }
+
+    getExam=(e)=>{
+        api.getExamByMethod("cholesky decomposition").then(db=>{
+            this.setState({
+                row : db.data.data.row,
+                column : db.data.data.column,
+                a_value : db.data.data.A,
+                b_value : db.data.data.B,
+                CanType: false
+            }
+            )
+        })
+
+    }
+
     render() {
         return (
-            <div style={{ background: "#FFFF", padding: "30px" }}>
-                <h2 style={{ color: "black", fontWeight: "bold" }}>Gauss Elimination</h2>
+            <div className="calBody">
                 <div className="row">
                     <div className="col">
                         <Card
+                            title = {<span style={{color:"white"}}>Gauss Elimination</span>}
                             bordered={true}
-                            style={{ background: "gray", borderRadius:"15px", color: "#FFFFFFFF" }}
+                            style={{ background: "#001529", borderRadius:"15px", color: "#FFFFFFFF" }}
                             onChange={this.handleChange}
                         >
 
 
                             {this.state.showDimentionForm &&
                                 <div>
-                                    <h2>Row</h2><Input size="large" name="row" style={InputStyle}></Input>
-                                    <h2>Column</h2><Input size="large" name="column" style={InputStyle}></Input>
+                                    <h2 style={{color:"white"}}>Row</h2><Input size="large" name="row" value={this.state.row} style={InputStyle}></Input>
+                                    <h2 style={{color:"white"}}>Column</h2><Input size="large" name="column" value={this.state.column} style={InputStyle}></Input><br/><br/>
+                                    <Button id="submit_examInput" onClick={this.getExam} style={{ background: "white", color: "#001529" ,float:"left"}}>Example</Button>
                                     <Button id="dimention_button" onClick={
                                         () => this.createMatrix(this.state.row, this.state.column)
                                     }
-                                        style={{ background: "#4caf50", color: "white" }}>
+                                        style={{ background: "#4caf12", color: "white" , float:"right"}}>
                                         Submit<br></br>
                                     </Button>
                                 </div>
@@ -155,12 +176,12 @@ class Gauss extends Component {
 
                             {this.state.showMatrixForm &&
                                 <div>
-                                    <h2>Matrix [A]</h2><br />{matrixA}
-                                    <h2>Vector [B]<br /></h2>{matrixB}
+                                    <h2 style={{color:"white"}}>Matrix [A]</h2><br />{matrixA}
+                                    <h2 style={{color:"white"}}>Vector [B]<br /></h2>{matrixB}
                                     
                                     <Button
                                         id="matrix_button"
-                                        style={{ background: "blue", color: "white" }}
+                                        style={{ background: "#4caf12", color: "white" ,float:"right"}}
                                         onClick={() => this.gauss(this.state.row)}>
                                         Submit
                                     </Button>
@@ -171,9 +192,9 @@ class Gauss extends Component {
                     <div className="col">
                         {this.state.showOutputCard &&
                             <Card
-                                title={"Output"}
+                                title={<p style={{ color:"white" }}>Output</p>}
                                 bordered={true}
-                                style={{ background: "#3d683d", color: "#FFFFFFFF" }}
+                                style={{ background: "#001529", color: "#FFFFFFFF" }}
                                 onChange={this.handleChange} id="answerCard">
                                 <p style={{ fontSize: "24px", fontWeight: "bold" }}>{output}</p>
                             </Card>

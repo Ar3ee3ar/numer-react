@@ -5,6 +5,7 @@ import Graph from '../../components/Graph'
 import 'antd/dist/antd.css';
 import '../../style/screen.css'
 import { derivative} from 'mathjs'
+import api from '../../api'
 
 
 const InputStyle = {
@@ -105,6 +106,15 @@ class Newton_Raphson extends React.Component{
                 showGraph: false
             });
         }
+
+    getExam=(e)=>{
+        api.getExamByMethod("newton raphson").then(db=>{
+            this.setState({
+                fx : db.data.data.fx,
+                X : db.data.data.x,
+            })
+        })
+    }
     
     render() {
         let { fx, X } = this.state;
@@ -120,12 +130,13 @@ class Newton_Raphson extends React.Component{
                             id="inputCard"
                         >
                             <h2 style={{color:"white"}}>f(x)</h2><Input size="large" name="fx" value= {this.state.fx} style={InputStyle} disabled = {(this.state.disabled)? "disabled" : ""}></Input>
-                            <h2 style={{color:"white"}}>X</h2><Input size="large" name="X" style={InputStyle} ></Input><br /><br />
+                            <h2 style={{color:"white"}}>X</h2><Input size="large" name="X"  value= {this.state.X} style={InputStyle} ></Input><br /><br />
                             <Button id="submit_button" onClick={
                                 () => this.newton_Raphson(parseFloat(X))
                             }
-                                style={{ background: "white", color: "#001529" }}>Submit</Button>
-                            {this.state.disabled&&<Button onClick={this.resetField} style={{float:'right'}}>Reset</Button>}
+                                style={{ background: "#4caf12", color: "white" }}>Submit</Button>
+                            <Button id="submit_exam" onClick={this.getExam} style={{ background: "white", color: "#001529" , float:"right" }}>Example</Button>
+                            {this.state.disabled&&<Button onClick={this.resetField} style={{ background:"red",color:"white", marginLeft:"1%"}}>Reset</Button>}
                         </Card>}
                     </div>
                     <div className="col">

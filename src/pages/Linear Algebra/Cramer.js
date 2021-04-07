@@ -3,6 +3,7 @@ import { Card, Input, Button } from 'antd';
 import { det } from 'mathjs';
 import '../../style/screen.css'
 import 'antd/dist/antd.css';
+import api from '../../api'
 
 const InputStyle = {
     background: "white",
@@ -21,9 +22,12 @@ class Cramer extends Component {
         this.state = {
             row: parseInt(0),
             column: parseInt(0),
+            a_value: [],
+            b_value: [],
             showDimentionForm: true,
             showMatrixForm: false,
-            showOutputCard: false
+            showOutputCard: false,
+            CallExam : false
         }
         this.handleChange = this.handleChange.bind(this);
         this.cramer = this.cramer.bind(this);
@@ -71,7 +75,7 @@ class Cramer extends Component {
                     fontSize: "18px",
                     fontWeight: "bold"
                 }}
-                    id={"a" + i + "" + j} key={"a" + i + "" + j} placeholder={"a" + i + "" + j} />)
+                    id={"a" + i + "" + j} key={"a" + i + "" + j} placeholder={(this.state.CallExam)? this.state.a_value[i-1][j-1]:("a"+(i)+""+(j))}/>)
             }
             matrixA.push(<br />)
             matrixB.push(<Input style={{
@@ -84,7 +88,7 @@ class Cramer extends Component {
                 fontSize: "18px",
                 fontWeight: "bold"
             }}
-                id={"b" + i} key={"b" + i} placeholder={"b" + i} />)
+                id={"b" + i} key={"b" + i} placeholder={(this.state.CallExam)? this.state.b_value[i-1]:("b"+(i))}/>)
         }
 
         this.setState({
@@ -111,6 +115,18 @@ class Cramer extends Component {
         });
     }
 
+    getExam=(e)=>{
+        api.getExamByMethod("cholesky decomposition").then(db=>{
+            this.setState({
+                row : db.data.data.row,
+                column : db.data.data.column,
+                a_value : db.data.data.A,
+                b_value : db.data.data.B,
+                CallExam : true
+            })
+        })
+    }
+
     render() {
         let { row, column } = this.state;
         return (
@@ -126,12 +142,13 @@ class Cramer extends Component {
 
                             {this.state.showDimentionForm &&
                                 <div>
-                                    <h4 style={{color:"white"}}>Row</h4><Input size="large" name="row" style={InputStyle}></Input>
-                                    <h4 style={{color:"white"}}>Column</h4><Input size="large" name="column" style={InputStyle}></Input><br />
+                                    <h4 style={{color:"white"}}>Row</h4><Input size="large" name="row" value={this.state.row} style={InputStyle}></Input>
+                                    <h4 style={{color:"white"}}>Column</h4><Input size="large" name="column" value={this.state.column} style={InputStyle}></Input><br /><br/>
+                                    <Button id="submit_examInput" onClick={this.getExam} style={{ background: "white", color: "#001529" ,float:"left"}}>Example</Button>
                                     <Button id="dimention_button" onClick={
                                         () => this.createMatrix(row, column)
                                     }
-                                        style={{ background: "#4caf50", color: "white" }}>
+                                        style={{ background: "#4caf12", color: "white",float:"right" }}>
                                         Submit
                                     </Button>
                                 </div>
@@ -143,7 +160,7 @@ class Cramer extends Component {
                                     <Button
                                         size="large"
                                         id="matrix_button"
-                                        style={{ background: "blue", color: "white" }}
+                                        style={{ background: "#4caf12", color: "white" ,float:"right"}}
                                         onClick={() => this.cramer()}>
                                         Submit
                                 </Button>
@@ -159,7 +176,7 @@ class Cramer extends Component {
                             <Card
                                 title={"Output"}
                                 bordered={true}
-                                style={{ width: "100%", background: "#3d683d", color: "#FFFFFFFF", float: "left" }}
+                                style={{ width: "100%", background: "white", color: "#001529", float: "left" }}
                                 onChange={this.handleChange}>
                                 <p style={{ fontSize: "24px", fontWeight: "bold" }}>{answer}</p>
                             </Card>

@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import {Card, Input, Button, Table} from 'antd';
 import '../../style/screen.css'
 import 'antd/dist/antd.css';
+import api from '../../api'
 
 const InputStyle = {
     background: "white",
@@ -42,6 +43,9 @@ class Lagrange extends Component {
         this.state = {
             nPoints: 0,
             X: 0,
+            array_x_value: [],
+            array_y_value: [],
+            point_value: [],
             interpolatePoint: 0,
             showInputForm : true,
             showTableInput: false,
@@ -63,7 +67,7 @@ class Lagrange extends Component {
                 fontSize: "18px",
                 fontWeight: "bold"
             }}
-            id={"x"+i} key={"x"+i} placeholder={"x"+i}/>);
+            id={"x"+i} key={"x"+i} placeholder={"x"+i} value={this.state.array_x_value[i-1]}/>);
             y.push(<Input style={{
                 width: "100%",
                 height: "50%", 
@@ -74,14 +78,13 @@ class Lagrange extends Component {
                 fontSize: "18px",
                 fontWeight: "bold"
             }} 
-            id={"y"+i} key={"y"+i} placeholder={"y"+i}/>);   
+            id={"y"+i} key={"y"+i} placeholder={"y"+i} value={this.state.array_y_value[i-1]}/>);   
             tableTag.push({
                 no: i,
                 x: x[i-1],
                 y: y[i-1]
             });
         }
-
 
         this.setState({
             showInputForm: false,
@@ -100,7 +103,7 @@ class Lagrange extends Component {
                 fontSize: "18px",
                 fontWeight: "bold"
             }} 
-            id={"p"+i} key={"p"+i} placeholder={"p"+i} />)
+            id={"p"+i} key={"p"+i} placeholder={"p"+i} value={this.state.point_value[i-1]}/>)
         }
     }
     initialValue() {
@@ -144,6 +147,21 @@ class Lagrange extends Component {
             [event.target.name]: event.target.value
         });
     }
+
+    getExam=(e)=>{
+        api.getExamByMethod("lagrange interpolation").then(db=>{
+            this.setState({
+                nPoints : db.data.data.all_point,
+                X : db.data.data.x_target,
+                interpolatePoint : db.data.data.inter_point,
+                array_x_value : db.data.data.array_x,
+                array_y_value : db.data.data.array_y,
+                point_value : db.data.data.point
+            })
+        })
+    }
+
+
     render() {
         return(
             <div className="calBody">
@@ -157,27 +175,28 @@ class Lagrange extends Component {
                         >
                             {this.state.showInputForm && 
                                 <div>
-                                    <h2 style={{color:"white"}}>Number of points(n)</h2><Input size="large" name="nPoints" style={InputStyle}></Input>
-                                    <h2 style={{color:"white"}}>X</h2><Input size="large" name="X" style={InputStyle}></Input>
-                                    <h2 style={{color:"white"}}>interpolatePoint</h2><Input size="large" name="interpolatePoint" style={InputStyle}></Input>
+                                    <h2 style={{color:"white"}}>Number of points(n)</h2><Input size="large" name="nPoints" value={this.state.nPoints} style={InputStyle}></Input>
+                                    <h2 style={{color:"white"}}>X</h2><Input size="large" name="X" value={this.state.X} style={InputStyle}></Input>
+                                    <h2 style={{color:"white"}}>interpolatePoint</h2><Input size="large" name="interpolatePoint" value={this.state.interpolatePoint} style={InputStyle}></Input><br/><br/>
                                     <Button id="dimention_button" onClick= {
                                         ()=>{this.createTableInput(parseInt(this.state.nPoints));
                                         this.createInterpolatePointInput()}
                                     }  
-                                        style={{background: "#4caf50", color: "white" }}>
+                                        style={{background: "#4caf12", color: "white" ,float:"right"}}>
                                         Submit
                                     </Button>
+                                    <Button id="submit_examInput" onClick={this.getExam} style={{ background: "white", color: "#001529" ,float:"left"}}>Example</Button>
                                 </div> 
                             }
                             {this.state.showTableInput && 
                                 <div>
                                     <Table columns={columns} dataSource={tableTag} pagination={false} bordered={true} bodyStyle={{fontWeight: "bold", fontSize: "18px", color: "white" , overflowY: "scroll", minWidth: 120, maxHeight: 300}}></Table>
-                                    <br/><h2>interpolatePoint {parseInt(this.state.interpolatePoint) === 2 ? "(Linear)": 
+                                    <br/><h2 style={{color:"white"}}>interpolatePoint {parseInt(this.state.interpolatePoint) === 2 ? "(Linear)": 
                                                             parseInt(this.state.interpolatePoint) === 3 ? "(Quadratic)" :
                                                             "(Polynomial)"}</h2>{tempTag}
                                     <Button 
                                         id="matrix_button"  
-                                        style={{background: "blue", color: "white", fontSize: "20px"}}
+                                        style={{background: "yellow", color: "#001529"}}
                                         onClick={()=>this.lagrange(parseInt(this.state.interpolatePoint), parseFloat(this.state.X))}>
                                         Submit
                                     </Button>
@@ -191,9 +210,9 @@ class Lagrange extends Component {
                             <Card
                             title={"Output"}
                             bordered={true}
-                            style={{ border: "2px solid black", background: "rgb(61, 104, 61) none repeat scroll 0% 0%", color: "white" }}
+                            style={{ border: "2px solid black", background: "white none repeat scroll 0% 0%", color: "white" }}
                             >
-                                <p style={{fontSize: "24px", fontWeight: "bold"}}>{fx}</p>
+                                <p style={{fontSize: "24px", fontWeight: "bold",color:"#001529"}}>f({this.state.X})={fx}</p>
                             </Card>                        
                         }                        
                     </div>     

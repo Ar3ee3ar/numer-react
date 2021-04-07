@@ -3,6 +3,8 @@ import { Card, Input, Button } from 'antd';
 import '../../style/screen.css'
 import 'antd/dist/antd.css';
 import { inv, multiply, fraction, format } from 'mathjs';
+import api from '../../api'
+
 const InputStyle = {
     background: "white",
     color: "#001529",
@@ -22,7 +24,8 @@ class Inverse extends Component {
             column: 0,
             showDimentionForm: true,
             showMatrixForm: false,
-            showOutputCard: false
+            showOutputCard: false,
+            CallExam: false
         }
         this.handleChange = this.handleChange.bind(this);
         this.inverse = this.inverse.bind(this);
@@ -33,7 +36,8 @@ class Inverse extends Component {
         this.initMatrix();
         try {
             A = inv(A);
-            answer = multiply(A, B)
+            answer = multiply(A,B)
+            console.log(A)
             for (var i = 0; i < n; i++) {
                 for (var j = 0; j < n; j++) {
                     if (!Number.isInteger(A[i][j])) {
@@ -75,7 +79,7 @@ class Inverse extends Component {
                     fontSize: "18px",
                     fontWeight: "bold"
                 }}
-                    id={"a" + i + "" + j} key={"a" + i + "" + j} placeholder={"a" + i + "" + j} />)
+                    id={"a" + i + "" + j} key={"a" + i + "" + j} placeholder={(this.state.CallExam)? this.state.a_value[i-1][j-1] : ("a"+i+""+j)} />)
             }
             matrixA.push(<br />)
             matrixB.push(<Input style={{
@@ -88,7 +92,7 @@ class Inverse extends Component {
                 fontSize: "18px",
                 fontWeight: "bold"
             }}
-                id={"b" + i} key={"b" + i} placeholder={"b" + i} />)
+                id={"b" + i} key={"b" + i} placeholder={(this.state.CallExam)? this.state.b_value[i-1]:("b"+i)} />)
 
 
         }
@@ -115,6 +119,21 @@ class Inverse extends Component {
             [event.target.name]: event.target.value
         });
     }
+
+    getExam=(e)=>{
+        api.getExamByMethod("matrix inversion").then(db=>{
+            this.setState({
+                row : db.data.data.row,
+                column : db.data.data.column,
+                a_value : db.data.data.A,
+                b_value : db.data.data.B,
+                CallExam : true
+            }
+            )
+        })
+
+    }
+
     render() {
         return (
             <div className="calBody">
@@ -129,12 +148,13 @@ class Inverse extends Component {
 
                             {this.state.showDimentionForm &&
                                 <div>
-                                    <h2 style={{color:"white"}}>Row</h2><Input size="large" name="row" style={InputStyle}></Input>
-                                    <h2 style={{color:"white"}}>Column</h2><Input size="large" name="column" style={InputStyle}></Input>
+                                    <h2 style={{color:"white"}}>Row</h2><Input size="large" name="row" value={this.state.row} style={InputStyle}></Input>
+                                    <h2 style={{color:"white"}}>Column</h2><Input size="large" name="column" value={this.state.column} style={InputStyle}></Input><br/><br/>
+                                    <Button id="submit_examInput" onClick={this.getExam} style={{ background: "white", color: "#001529" ,float:"left"}}>Example</Button>
                                     <Button id="dimention_button" onClick={
                                         () => this.createMatrix(this.state.row, this.state.column)
                                     }
-                                        style={{ background: "#4caf50", color: "white" }}>
+                                        style={{ background: "#4caf12", color: "white", float:"right" }}>
                                         Submit<br></br>
                                     </Button>
                                 </div>
@@ -146,7 +166,7 @@ class Inverse extends Component {
                                     <h2 style={{color:"white"}}>Vector [B]<br /></h2>{matrixB}
                                     <Button
                                         id="matrix_button"
-                                        style={{ background: "blue", color: "white" }}
+                                        style={{ background: "#4caf12", color: "white" }}
                                         onClick={() => this.inverse(this.state.row)}>
                                         Submit
                                 </Button>
@@ -160,9 +180,10 @@ class Inverse extends Component {
                             <Card
                                 title={"Output"}
                                 bordered={true}
-                                style={{ background: "#3d683d", color: "#FFFFFFFF" }}
+                                style={{ background: "white", color: "#001529" }}
                                 onChange={this.handleChange} id="answerCard">
-                                <p style={{ fontSize: "24px", fontWeight: "bold" }}>{output}</p>
+                                {/*<p style={{ fontSize: "24px", fontWeight: "bold" }}>A<sup>-1</sup></p>
+                                <p style={{ fontSize: "24px", fontWeight: "bold" }}>{output}</p>*/}
                                 <p style={{ fontSize: "24px", fontWeight: "bold" }}>X = {JSON.stringify(answer)}</p>
                             </Card>
                         }

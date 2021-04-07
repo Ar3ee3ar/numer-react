@@ -3,6 +3,8 @@ import {Card, Input, Button} from 'antd';
 import '../../style/screen.css'
 import 'antd/dist/antd.css';
 import { format } from 'mathjs';
+import api from '../../api'
+
 const InputStyle = {
     background: "white",
     color: "#001529",
@@ -19,9 +21,12 @@ class Cholesky extends Component {
         this.state = {
             row: 0,
             column: 0,
+            a_value: [],
+            b_value: [],
             showDimentionForm : true,
             showMatrixForm: false,
-            showOutputCard: false
+            showOutputCard: false,
+            CallExam : false
         }
         this.handleChange = this.handleChange.bind(this);
         this.cholesky = this.cholesky.bind(this)
@@ -32,7 +37,6 @@ class Cholesky extends Component {
         this.initMatrix();
         var  x  = new Array(n);
         var  y  = new Array(n)
-
         if (matrixA[0][0] === 0) {
             for (var i=0 ; i<n ; i++) {
                 var temp = A[0][i];
@@ -110,27 +114,27 @@ class Cholesky extends Component {
                 matrixA.push(<Input style={{
                     width: "18%",
                     height: "50%", 
-                    backgroundColor:"#06d9a0", 
+                    backgroundColor:"white", 
                     marginInlineEnd: "5%", 
                     marginBlockEnd: "5%",
-                    color: "white",
+                    color: "black",
                     fontSize: "18px",
                     fontWeight: "bold"
                 }} 
-                id={"a"+(i+1)+""+(j+1)} key={"a"+(i+1)+""+(j+1)} placeholder={"a"+(i+1)+""+(j+1)} />)  
+                id={"a"+(i+1)+""+(j+1)} key={"a"+(i+1)+""+(j+1)} placeholder={(this.state.CallExam)? this.state.a_value[i][j]:("a"+(i+1)+""+(j+1))}/>)  
             }
             matrixA.push(<br/>)
             matrixB.push(<Input style={{
                 width: "18%",
                 height: "50%", 
-                backgroundColor:"black", 
+                backgroundColor:"white", 
                 marginInlineEnd: "5%", 
                 marginBlockEnd: "5%",
-                color: "white",
+                color: "black",
                 fontSize: "18px",
                 fontWeight: "bold"
             }} 
-            id={"b"+(i+1)} key={"b"+(i+1)} placeholder={"b"+(i+1)} />)
+            id={"b"+(i+1)} key={"b"+(i+1)} placeholder={(this.state.CallExam)? this.state.b_value[i]:("b"+(i+1))}/>)
                 
             
         }
@@ -157,27 +161,41 @@ class Cholesky extends Component {
             [event.target.name]: event.target.value
         });
     }
+
+    getExam=(e)=>{
+        api.getExamByMethod("cholesky decomposition").then(db=>{
+            this.setState({
+                row : db.data.data.row,
+                column : db.data.data.column,
+                a_value : db.data.data.A,
+                b_value : db.data.data.B,
+                CallExam : true
+            })
+        })
+    }
+
     render() {
         return(
-            <div style={{ background: "#FFFF", padding: "30px" }}>
-                <h2 style={{color: "black", fontWeight: "bold"}}>Cholesky Decomposition</h2>
+            <div className="calBody">
                 <div className="row">
                     <div className="col">
                         <Card
-                        bordered={true}
-                        style={{ background: "gray", borderRadius:"15px", color: "#FFFFFFFF"}}
-                        onChange={this.handleChange}
+                            title = {<span style={{color:"white"}}>Cholesky Decomposition</span>}
+                            bordered={true}
+                            style={{ background: "#001529", borderRadius:"15px", color: "#FFFFFFFF" }}
+                            onChange={this.handleChange}
                         >
                             
                             
                             {this.state.showDimentionForm && 
                                 <div>
-                                    <h2>Row</h2><Input size="large" name="row" style={InputStyle}></Input>
-                                    <h2>Column</h2><Input size="large" name="column" style={InputStyle}></Input>
+                                    <h2 style={{color:"white"}}>Row</h2><Input size="large" name="row" value={this.state.row} style={InputStyle}></Input>
+                                    <h2 style={{color:"white"}}>Column</h2><Input size="large" name="column" value={this.state.column} style={InputStyle}></Input><br/><br/>
+                                    <Button id="submit_examInput" onClick={this.getExam} style={{ background: "white", color: "#001529" ,float:"left"}}>Example</Button>
                                     <Button id="dimention_button" onClick= {
                                         ()=>this.createMatrix(this.state.row, this.state.column)
                                         }  
-                                        style={{background: "#4caf50", color: "white", fontSize: "20px"}}>
+                                        style={{background: "#4caf12", color: "white", float:"right"}}>
                                         Submit<br></br>
                                     </Button>
                                 </div> 
@@ -185,11 +203,11 @@ class Cholesky extends Component {
                             
                             {this.state.showMatrixForm && 
                                 <div>
-                                    <h2>Matrix [A]</h2><br/>{matrixA}
-                                    <h2>Vector [B]<br/></h2>{matrixB}
+                                    <h2 style={{color:"white"}}>Matrix [A]</h2><br/>{matrixA}
+                                    <h2 style={{color:"white"}}>Vector [B]<br/></h2>{matrixB}
                                     <Button 
                                         id="matrix_button"  
-                                        style={{background: "blue", color: "white", fontSize: "20px"}}
+                                        style={{background: "#4caf12", color: "black", float:"right"}}
                                         onClick={()=>this.cholesky(this.state.row)}>
                                         Submit
                                     </Button>

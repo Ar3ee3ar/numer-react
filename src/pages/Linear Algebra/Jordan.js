@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Card, Input, Button } from 'antd';
 import '../../style/screen.css'
 import 'antd/dist/antd.css';
+import api from '../../api'
 
 const InputStyle = {
     background: "white",
@@ -19,9 +20,12 @@ class Jordan extends Component {
         this.state = {
             row: 0,
             column: 0,
+            a_value: [],
+            b_value: [],
             showDimentionForm: true,
             showMatrixForm: false,
-            showOutputCard: false
+            showOutputCard: false,
+            CallExam: false
         }
         this.handleChange = this.handleChange.bind(this);
         this.jordan = this.jordan.bind(this);
@@ -95,7 +99,7 @@ class Jordan extends Component {
                     fontSize: "18px",
                     fontWeight: "bold"
                 }}
-                    id={"a" + i + "" + j} key={"a" + i + "" + j} placeholder={"a" + i + "" + j} />)
+                    id={"a" + i + "" + j} key={"a" + i + "" + j} placeholder={(this.state.CallExam)? this.state.a_value[i-1][j-1] :("a" + i + "" + j)} />)
             }
             matrixA.push(<br />)
             matrixB.push(<Input style={{
@@ -108,7 +112,7 @@ class Jordan extends Component {
                 fontSize: "18px",
                 fontWeight: "bold"
             }}
-                id={"b" + i} key={"b" + i} placeholder={"b" + i} />)
+                id={"b" + i} key={"b" + i} placeholder={(this.state.CallExam)? this.state.b_value[i-1] :"b" + i} />)
 
 
         }
@@ -135,6 +139,19 @@ class Jordan extends Component {
             [event.target.name]: event.target.value
         });
     }
+
+    getExam=(e)=>{
+        api.getExamByMethod("gauss-jordan").then(db=>{
+            this.setState({
+                row : db.data.data.row,
+                column : db.data.data.column,
+                a_value : db.data.data.A,
+                b_value : db.data.data.B,
+                CallExam : true
+            })
+        })
+    }
+
     render() {
         let { row, column } = this.state;
         return (
@@ -150,12 +167,13 @@ class Jordan extends Component {
 
                             {this.state.showDimentionForm &&
                                 <div>
-                                    <h2 style={{color:"white"}}>Row</h2><Input size="large" name="row" style={InputStyle}></Input>
-                                    <h2 style={{color:"white"}}>Column</h2><Input size="large" name="column" style={InputStyle}></Input>
+                                    <h2 style={{color:"white"}}>Row</h2><Input size="large" name="row" value={this.state.row} style={InputStyle}></Input>
+                                    <h2 style={{color:"white"}}>Column</h2><Input size="large" name="column" value={this.state.column} style={InputStyle}></Input><br/><br/>
+                                    <Button id="submit_examInput" onClick={this.getExam} style={{ background: "white", color: "#001529" ,float:"left"}}>Example</Button>
                                     <Button id="dimention_button" onClick={
                                         () => this.createMatrix(row, column)
                                     }
-                                        style={{ background: "#4caf50", color: "white", fontSize: "20px" }}>
+                                        style={{ background: "#4caf12", color: "white", float:"right" }}>
                                         Submit<br></br>
                                     </Button>
                                 </div>
@@ -168,7 +186,7 @@ class Jordan extends Component {
                                     
                                     <Button
                                         id="matrix_button"
-                                        style={{ background: "blue", color: "white", fontSize: "20px" }}
+                                        style={{ background: "#4caf12", color: "white", float:"right" }}
                                         onClick={() => this.jordan(row)}>
                                         Submit
                                     </Button>
@@ -181,9 +199,9 @@ class Jordan extends Component {
                     <div className="col">
                         {this.state.showOutputCard &&
                             <Card
-                                title={"Output"}
+                                title={<p style={{color:"#001529"}}>Output</p>}
                                 bordered={true}
-                                style={{ width: 400, background: "#3d683d", color: "#FFFFFFFF", float: "left" }}
+                                style={{ width: "100%", color: "#001529", background: "#FFFFFFFF", float: "left" }}
                                 onChange={this.handleChange} id="answerCard">
                                 <p style={{ fontSize: "24px", fontWeight: "bold" }}>{output}</p>
                             </Card>

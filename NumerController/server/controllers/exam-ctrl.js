@@ -1,28 +1,28 @@
-const Movie = require('../models/exam-model')
+const Exam = require('../models/exam-model')
 
-const getMovieByName = async (req, res) => {
-    await Movie.findOne({ method : req.params.method }, (err, movie) => {
+const getExamByMethod = async (req, res) => {
+    await Exam.findOne({ method : req.params.method }, (err, exams) => {
         if (err) {
             return res.status(400).json({ success: false, error: err })
         }
 
-        if (!movie) {
+        if (!exams) {
             return res
                 .status(404)
-                .json({ success: false, error: `!!!!!!!!!!!!!!!!!!1`})
+                .json({ success: false, error: `not found exam`})
         }
-        return res.status(200).json({ success: true, data: movie })
+        return res.status(200).json({ success: true, data: exams })
     }).catch(err => console.log(err))
 }
 
-const getMovies = async (req, res) => {
-    await Movie.find({}, (err, movies) => {
-        console.log("Arzeezar in getMovies length of database is --->"+movies.length)
-        return res.status(200).json({ success: true, data: movies })
+const getExam = async (req, res) => {
+    await Exam.find({}, (err, exams) => {
+        //console.log("Arzeezar in getMovies length of database is --->"+ movies.length)
+        return res.status(200).json({ success: true, data: exams })
     }).catch(err => console.log(err))
 }
 
 module.exports = {
-    getMovies,
-    getMovieByName,
+    getExam,
+    getExamByMethod,
 }

@@ -4,6 +4,7 @@ import {func} from '../../group_library/lib_use.js';
 import Graph from '../../components/Graph'
 import 'antd/dist/antd.css';
 import '../../style/screen.css'
+import api from '../../api'
 
 
 const InputStyle = {
@@ -42,7 +43,7 @@ class Secant extends React.Component{
         super(props);
         this.state={
           fx : "",
-          x0 : 0.0,
+          X0 : 0.0,
           X1 : 0.0,
           showOutputCard: false,
             showGraph: false,
@@ -109,9 +110,19 @@ class Secant extends React.Component{
                 showGraph: false
             });
         }
+
+    getExam=(e)=>{
+        api.getExamByMethod("secant").then(db=>{
+            this.setState({
+                fx : db.data.data.fx,
+                X0 : db.data.data.xl,
+                X1 : db.data.data.xr
+            })
+        })
+    }
     
     render() {
-        let { fx, x0, x1 } = this.state;
+        let { fx, X0, X1 } = this.state;
         return (
             <div className="calBody">
                 <div className="row">
@@ -124,17 +135,18 @@ class Secant extends React.Component{
                             id="inputCard"
                         >
                             <h2 style={{color:"white"}}>f(x)</h2><Input size="large" name="fx" value= {this.state.fx} style={InputStyle} disabled = {(this.state.disabled)? "disabled" : ""}></Input>
-                            <h2 style={{color:"white"}}>X<sub>0</sub></h2><Input size="large" name="x0" style={InputStyle} ></Input>
-                            <h2 style={{color:"white"}}>X<sub>1</sub></h2><Input size="large" name="x1" style={InputStyle}></Input><br /><br />
+                            <h2 style={{color:"white"}}>X<sub>0</sub></h2><Input size="large" name="X0" value= {this.state.X0} style={InputStyle} ></Input>
+                            <h2 style={{color:"white"}}>X<sub>1</sub></h2><Input size="large" name="X1" value= {this.state.X1} style={InputStyle}></Input><br /><br />
                             <Button id="submit_button" onClick={
-                                () => this.secant(parseFloat(x0), parseFloat(x1))
+                                () => this.secant(parseFloat(X0), parseFloat(X1))
                             }
-                                style={{ background: "white", color: "#001529" }}>Submit</Button>
-                            {this.state.disabled&&<Button onClick={this.resetField} style={{float:'right'}}>Reset</Button>}
+                                style={{ background: "#4caf12", color: "white" }}>Submit</Button>
+                            <Button id="submit_exam" onClick={this.getExam} style={{ background: "white", color: "#001529" , float:"right" }}>Example</Button>
+                            {this.state.disabled&&<Button onClick={this.resetField} style={{ background:"red",color:"white", marginLeft:"1%"}}>Reset</Button>}
                         </Card>}
                     </div>
                     <div className="col">
-                        {this.state.showGraph && <Graph fx={fx} title="Secant Method" x0={x0} x1={x1} />}
+                        {this.state.showGraph && <Graph fx={fx} title="Secant Method" />}
                     </div>
                 </div>
                 <div className="row">

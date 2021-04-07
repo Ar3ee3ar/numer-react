@@ -3,6 +3,8 @@ import { Card, Input, Button, Table } from 'antd';
 import '../../style/screen.css'
 import 'antd/dist/antd.css';
 import { lusolve, round, squeeze } from 'mathjs';
+import api from '../../api'
+
 
 const InputStyle = {
     background: "white",
@@ -42,11 +44,13 @@ class MultipleLinear extends Component {
         this.state = {
             nPoints: 0,
             X: 0,
-
-            interpolatePoint: 0,
+            array_x_value: [],
+            array_y_value: [],
+            array_xt_value: [],
             showInputForm: true,
             showTableInput: false,
-            showOutputCard: false
+            showOutputCard: false,
+            CallExam: false
         }
         this.handleChange = this.handleChange.bind(this);
 
@@ -67,7 +71,7 @@ class MultipleLinear extends Component {
                     fontWeight: "bold",
                     justifyContent: "center",
                 }}
-                    id={"x" + i + "" + j} key={"x" + i + "" + j} placeholder={"x" + i + "" + j} />);
+                    id={"x" + i + "" + j} key={"x" + i + "" + j} placeholder={(this.state.CallExam)?this.state.array_x_value[i-1][j-1]:"x" + i + "" + j} />);
             }
             y.push(<Input style={{
                 width: "100%",
@@ -79,7 +83,7 @@ class MultipleLinear extends Component {
                 fontSize: "18px",
                 fontWeight: "bold"
             }}
-                id={"y" + i} key={"y" + i} placeholder={"y" + i} />);
+                id={"y" + i} key={"y" + i} placeholder={(this.state.CallExam)?this.state.array_y_value[i-1]:"y" + i} />);
             tableTag.push({
                 no: i,
                 x: x[i],
@@ -109,7 +113,7 @@ class MultipleLinear extends Component {
                 fontSize: "18px",
                 fontWeight: "bold"
             }}
-                    id={"xt" + i} key={"xt" + i} placeholder={"xt"+i} />);
+                    id={"xt" + i} key={"xt" + i} placeholder={(this.state.CallExam)?this.state.array_xt_value[i-1]:("xt"+i)} />);
                     console.log(i)
         }
         this.setState({
@@ -198,6 +202,21 @@ class MultipleLinear extends Component {
             [event.target.name]: event.target.value
         });
     }
+
+    getExam=(e)=>{
+        api.getExamByMethod("multiple linear regression").then(db=>{
+            this.setState({
+                nPoints : db.data.data.all_point,
+                array_xt_value : db.data.data.x_multi_target,
+                array_x_value : db.data.data.array_x_multi,
+                array_y_value : db.data.data.array_y,
+                X : db.data.data.x_point,
+                CallExam: true
+            })
+        })
+        console.log(this.state.array_xt_value)
+    }
+
     render() {
         return (
             <div className="calBody">
@@ -211,13 +230,14 @@ class MultipleLinear extends Component {
                         >
                             {this.state.showInputForm &&
                                 <div>
-                                    <h2 style={{color:"white"}}>Number of X</h2><Input size="large" name="X" style={InputStyle}></Input>
-                                    <h2 style={{color:"white"}}>Number of points(n)</h2><Input size="large" name="nPoints" style={InputStyle}></Input>
+                                    <h2 style={{color:"white"}}>Number of X</h2><Input size="large" name="X" value={this.state.X} style={InputStyle}></Input>
+                                    <h2 style={{color:"white"}}>Number of points(n)</h2><Input size="large" name="nPoints"value={this.state.nPoints} style={InputStyle}></Input><br/><br/>
+                                    <Button id="submit_examInput" onClick={this.getExam} style={{ background: "white", color: "#001529" ,float:"left"}}>Example</Button>
                                     <Button id="dimention_button" onClick={
                                         () => {
                                             this.createTableInput(parseInt(this.state.nPoints), parseInt(this.state.X));
                                             this.createTableX_target(parseInt(this.state.X))}}
-                                        style={{ background: "#4caf50", color: "white", fontSize: "20px" }}>
+                                        style={{ background: "#4caf12", color: "white", float:"right" }}>
                                         Submit<br></br>
                                     </Button>
                                 </div>
@@ -228,7 +248,7 @@ class MultipleLinear extends Component {
                                     <h2 style={{color:"white"}}>X_target<br /></h2>{X_target}<br/>
                                     <Button
                                         id="matrix_button"
-                                        style={{ background: "blue", color: "white", fontSize: "20px" }}
+                                        style={{ background: "#4caf12", color: "white", float:"right" }}
                                         onClick={() => {
                                             this.initialValue(parseInt(this.state.nPoints), parseInt(this.state.X));
                                             this.multipleLinear(parseInt(this.state.nPoints), parseInt(this.state.X))
@@ -246,7 +266,7 @@ class MultipleLinear extends Component {
                             <Card
                                 title={"Output"}
                                 bordered={true}
-                                style={{ border: "2px solid black", background: "rgb(61, 104, 61) none repeat scroll 0% 0%", color: "white" }}
+                                style={{ border: "2px solid black", background: "white none repeat scroll 0% 0%", color: "#001529" }}
                             >
                                 <p style={{ fontSize: "24px", fontWeight: "bold" }}>fx={fx}</p>
 

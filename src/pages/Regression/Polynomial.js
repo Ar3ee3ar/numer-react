@@ -3,6 +3,7 @@ import { Card, Input, Button, Table } from 'antd';
 import '../../style/screen.css'
 import 'antd/dist/antd.css';
 import { lusolve, squeeze, sum,pow } from 'mathjs';
+import api from '../../api'
 
 const InputStyle = {
     background: "white",
@@ -42,10 +43,13 @@ class Polynomial extends Component {
             nPoints: 0,
             m: 0,
             X_target: 0,
+            array_x_value:[],
+            array_y_value:[],
             interpolatePoint: 0,
             showInputForm: true,
             showTableInput: false,
-            showOutputCard: false
+            showOutputCard: false,
+            CallExam: false
         }
         this.handleChange = this.handleChange.bind(this);
 
@@ -64,7 +68,7 @@ class Polynomial extends Component {
                 fontWeight: "bold",
                 justifyContent: "center"
             }}
-                id={"x" + i} key={"x" + i} placeholder={"x" + i} />);
+                id={"x" + i} key={"x" + i} placeholder={(this.state.CallExam)?this.state.array_x_value[i-1]:"x" + i} />);
             y.push(<Input style={{
                 width: "100%",
                 height: "50%",
@@ -75,7 +79,7 @@ class Polynomial extends Component {
                 fontSize: "18px",
                 fontWeight: "bold"
             }}
-                id={"y" + i} key={"y" + i} placeholder={"y" + i} />);
+                id={"y" + i} key={"y" + i} placeholder={(this.state.CallExam)?this.state.array_y_value[i-1]:"y" + i} />);
             tableTag.push({
                 no: i,
                 x: x[i - 1],
@@ -173,6 +177,21 @@ class Polynomial extends Component {
             [event.target.name]: event.target.value
         });
     }
+
+    getExam=(e)=>{
+        api.getExamByMethod("polynomial regression").then(db=>{
+            this.setState({
+                nPoints : db.data.data.all_point,
+                X_target : db.data.data.x_target,
+                array_x_value : db.data.data.array_x,
+                array_y_value : db.data.data.array_y,
+                m: db.data.data.m,
+                CallExam: true
+            })
+        })
+        console.log(this.state.m)
+    }
+
     render() {
         let {X_target} = this.state
         return (
@@ -187,11 +206,12 @@ class Polynomial extends Component {
                         >
                             {this.state.showInputForm &&
                                 <div>
-                                    <h2 style={{color:"white"}}>Number of points(n)</h2><Input size="large" name="nPoints" style={InputStyle}></Input>
-                                    <h2 style={{color:"white"}}>Order(m)</h2><Input size="large" name="m" style={InputStyle}></Input>
+                                    <h2 style={{color:"white"}}>Number of points(n)</h2><Input size="large" name="nPoints" value={this.state.nPoints} style={InputStyle}></Input>
+                                    <h2 style={{color:"white"}}>Order(m)</h2><Input size="large" name="m" value={this.state.m} style={InputStyle}></Input><br/><br/>
+                                    <Button id="submit_examInput" onClick={this.getExam} style={{ background: "white", color: "#001529" ,float:"left"}}>Example</Button>
                                     <Button id="dimention_button" onClick={
                                         () => this.createTableInput(parseInt(this.state.nPoints), parseInt(this.state.m))}
-                                        style={{ background: "#4caf50", color: "white", fontSize: "20px" }}>
+                                        style={{ background: "#4caf12", color: "white", float:"right" }}>
                                         Submit<br></br>
                                     </Button>
                                 </div>
@@ -199,10 +219,10 @@ class Polynomial extends Component {
                             {this.state.showTableInput &&
                                 <div>
                                     <Table columns={columns} dataSource={tableTag} pagination={false} bordered={true} bodyStyle={{ fontWeight: "bold", fontSize: "18px", color: "white", overflowY: "scroll", minWidth: 120, maxHeight: 300 }}></Table>
-                                    <h2 style={{color:"white"}}>X</h2><Input size="large" name="X_target" style={InputStyle}></Input>
+                                    <h2 style={{color:"white"}}>X</h2><Input size="large" name="X_target" value={this.state.X_target} style={InputStyle}></Input>
                                     <Button
                                         id="matrix_button"
-                                        style={{ background: "blue", color: "white", fontSize: "20px" }}
+                                        style={{ background: "#4caf12", color: "white", float:"right" }}
                                         onClick={() => {
                                             this.initialValue(parseInt(this.state.nPoints), parseInt(this.state.m));
                                             this.polynomial(parseInt(this.state.nPoints), parseInt(this.state.m),X_target)
@@ -220,7 +240,7 @@ class Polynomial extends Component {
                             <Card
                                 title={"Output"}
                                 bordered={true}
-                                style={{ border: "2px solid black", background: "rgb(61, 104, 61) none repeat scroll 0% 0%", color: "white" }}
+                                style={{ border: "2px solid black", background: "white none repeat scroll 0% 0%", color: "#001529" }}
                             >
                                 <p style={{ fontSize: "24px", fontWeight: "bold" }}>y = {fX_target}</p>
                             </Card>

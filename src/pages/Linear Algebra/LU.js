@@ -3,6 +3,8 @@ import { Card, Input, Button } from 'antd';
 import '../../style/screen.css'
 import 'antd/dist/antd.css';
 import { lusolve, format } from 'mathjs';
+import api from '../../api'
+
 const InputStyle = {
     background: "white",
     color: "#001529",
@@ -19,9 +21,12 @@ class LU extends Component {
         this.state = {
             row: 0,
             column: 0,
+            a_value: [],
+            b_value: [],
             showDimentionForm: true,
             showMatrixForm: false,
-            showOutputCard: false
+            showOutputCard: false,
+            CallExam: false
         }
         this.handleChange = this.handleChange.bind(this);
         this.Lu = this.Lu.bind(this);
@@ -59,7 +64,7 @@ class LU extends Component {
                     fontSize: "18px",
                     fontWeight: "bold"
                 }}
-                    id={"a" + i + "" + j} key={"a" + i + "" + j} placeholder={"a" + i + "" + j} />)
+                    id={"a" + i + "" + j} key={"a" + i + "" + j} placeholder={(this.state.CallExam)?this.state.a_value[i-1][j-1]:"a" + i + "" + j} />)
             }
             matrixA.push(<br />)
             matrixB.push(<Input style={{
@@ -72,7 +77,7 @@ class LU extends Component {
                 fontSize: "18px",
                 fontWeight: "bold"
             }}
-                id={"b" + i} key={"b" + i} placeholder={"b" + i} />)
+                id={"b" + i} key={"b" + i} placeholder={(this.state.CallExam)?this.state.b_value[i-1]:"b" + i} />)
 
 
         }
@@ -99,6 +104,19 @@ class LU extends Component {
             [event.target.name]: event.target.value
         });
     }
+
+    getExam=(e)=>{
+        api.getExamByMethod("LU decomposition").then(db=>{
+            this.setState({
+                row : db.data.data.row,
+                column : db.data.data.column,
+                a_value : db.data.data.A,
+                b_value : db.data.data.B,
+                CallExam : true
+            })
+        })
+    }
+
     render() {
         return (
             <div className="calBody">
@@ -114,12 +132,13 @@ class LU extends Component {
 
                             {this.state.showDimentionForm &&
                                 <div>
-                                    <h2 style={{color:"white"}}>Row</h2><Input size="large" name="row" style={InputStyle}></Input>
-                                    <h2 style={{color:"white"}}>Column</h2><Input size="large" name="column" style={InputStyle}></Input>
+                                    <h2 style={{color:"white"}}>Row</h2><Input size="large" name="row" value={this.state.row} style={InputStyle}></Input>
+                                    <h2 style={{color:"white"}}>Column</h2><Input size="large" name="column" value={this.state.column} style={InputStyle}></Input><br/><br/>
+                                    <Button id="submit_examInput" onClick={this.getExam} style={{ background: "white", color: "#001529" ,float:"left"}}>Example</Button>
                                     <Button id="dimention_button" onClick={
                                         () => this.createMatrix(this.state.row, this.state.column)
                                     }
-                                        style={{ background: "#4caf50", color: "white" }}>
+                                        style={{ background: "#4caf12", color: "white",float:"right" }}>
                                         Submit
                                 </Button>
                                 </div>
@@ -132,7 +151,7 @@ class LU extends Component {
                                     
                                 <Button
                                         id="matrix_button"
-                                        style={{ background: "blue", color: "white"}}
+                                        style={{ background: "#4caf12", color: "white"}}
                                         onClick={() => this.Lu()}>
                                         Submit
                                 </Button>
@@ -145,7 +164,7 @@ class LU extends Component {
                             <Card
                                 title={"Output"}
                                 bordered={true}
-                                style={{ background: "#3d683d", color: "#FFFFFFFF" }}
+                                style={{ color: "#001529", backgrounf: "#FFFFFFFF" }}
                                 onChange={this.handleChange} id="answerCard">
                                 <p style={{ fontSize: "24px", fontWeight: "bold" }}>{output}</p>
                             </Card>
