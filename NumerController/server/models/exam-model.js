@@ -16,13 +16,12 @@ const example = new Schema(
         all_point:{type: Number, required:false},
         x_target:{type: Number, required:false},
         inter_point:{type: Number, required:false},
-        array_x:{type:[Number],requird:false},
-        array_y:{type:[Number],requird:false},
-        point:{type:[Number],requird:false},
+        array_x:{type:[Number],required:false},
+        array_y:{type:[Number],required:false},
+        point:{type:[Number],required:false},
         m:{type: Number, required:false},
-        array_x_multi:{type:[[Number]],requird:false}
-    },
-    { timestamps: true },
+        array_x_multi:{type:[[Number]],required:false}
+    }, { collection : 'data' }
 )
 console.log("out-model")
-module.exports = mongoose.model('examples',example)
+module.exports = mongoose.model('data',example)

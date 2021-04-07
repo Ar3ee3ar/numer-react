@@ -13,6 +13,24 @@ import One_point_iteration from './pages/Root of Equation/One_point_iteration';
 import Newton_Raphson from './pages/Root of Equation/Newton_Raphson';
 import Secant from './pages/Root of Equation/Secant';
 
+import Cramer from './pages/Linear Algebra/Cramer';
+import Gauss from './pages/Linear Algebra/Gauss';
+import Jordan from './pages/Linear Algebra/Jordan';
+import Inverse from './pages/Linear Algebra/Inverse';
+import LU from './pages/Linear Algebra/LU';
+import Cholesky from './pages/Linear Algebra/Cholesky';
+import Jacobi from './pages/Linear Algebra/Jacobi';
+import Seidel from './pages/Linear Algebra/Seidel';
+import Gradient from './pages/Linear Algebra/Gradient';
+
+import NewtonInterpolate from './pages/Interpolation/Newton';
+import Lagrange from './pages/Interpolation/Lagrange';
+import Spline from './pages/Interpolation/Spline';
+
+import Linear from './pages/Regression/Linear';
+import Polynomial from './pages/Regression/Polynomial';
+import MultipleLinear from './pages/Regression/MultipleLinear';
+
 const { SubMenu } = Menu;
 const { Header, Content,Sider } = Layout;
 
@@ -86,25 +104,25 @@ class Routes extends React.Component {
                   <Menu.Item key="menu_secant"><Link to="/secant">Secant Method</Link></Menu.Item>
                 </SubMenu>
                 <SubMenu key="algebra_submenu" title={<span>Linear Algebra</span>}>
-                  <Menu.Item key="menu_cramer"><Link to="">Cramer's Rule</Link></Menu.Item>
-                  <Menu.Item key="menu_gauss"><Link to="">Gauss's Elimination</Link></Menu.Item>
-                  <Menu.Item key="menu_jordan"><Link to="">Gauss Jordan Method</Link></Menu.Item>
-                  <Menu.Item key="menu_inverse"><Link to="">Matrix Inversion</Link></Menu.Item>
-                  <Menu.Item key="menu_lu"><Link to="">LU Decomposition</Link></Menu.Item>
-                  <Menu.Item key="menu_cholesky"><Link to="">Cholesky Decomposition</Link></Menu.Item>
-                  <Menu.Item key="menu_jacobi"><Link to="">Jacobi Iteration Method</Link></Menu.Item>
-                  <Menu.Item key="menu_seidel"><Link to="">Gauss Seidel Iteration</Link></Menu.Item>
-                  <Menu.Item key="menu_gradient"><Link to="">Conjugate Gradient Method</Link></Menu.Item>
+                  <Menu.Item key="menu_cramer"><Link to="/cramer">Cramer's Rule</Link></Menu.Item>
+                  <Menu.Item key="menu_gauss"><Link to="/gauss">Gauss's Elimination</Link></Menu.Item>
+                  <Menu.Item key="menu_jordan"><Link to="/jordan">Gauss Jordan Method</Link></Menu.Item>
+                  <Menu.Item key="menu_inverse"><Link to="/inverse">Matrix Inversion</Link></Menu.Item>
+                  <Menu.Item key="menu_lu"><Link to="/lu">LU Decomposition</Link></Menu.Item>
+                  <Menu.Item key="menu_cholesky"><Link to="/cholesky">Cholesky Decomposition</Link></Menu.Item>
+                  <Menu.Item key="menu_jacobi"><Link to="/jacobi">Jacobi Iteration Method</Link></Menu.Item>
+                  <Menu.Item key="menu_seidel"><Link to="/seidel">Gauss Seidel Iteration</Link></Menu.Item>
+                  <Menu.Item key="menu_gradient"><Link to="/conjugate-gradient">Conjugate Gradient Method</Link></Menu.Item>
                 </SubMenu>
                 <SubMenu key="interpolate_submenu" title={<span>Interpolation</span>}>
-                  <Menu.Item key="menu_divide"><Link to="">Newton Divide Difference</Link></Menu.Item>
-                  <Menu.Item key="menu_lagrange"><Link to="">Lagrange</Link></Menu.Item>
-                  <Menu.Item key="menu_spline"><Link to="">Spline</Link></Menu.Item>
+                  <Menu.Item key="menu_divide"><Link to="/newton">Newton Divide Difference</Link></Menu.Item>
+                  <Menu.Item key="menu_lagrange"><Link to="/lagrange">Lagrange</Link></Menu.Item>
+                  <Menu.Item key="menu_spline"><Link to="/spline">Spline</Link></Menu.Item>
                 </SubMenu>
                 <SubMenu key="regression_submenu" title={<span>Least Squares Regression</span>}>
-                  <Menu.Item key="menu_linear"><Link to="">Linear Regression</Link></Menu.Item>
-                  <Menu.Item key="menu_poly"><Link to="">Polynomial Regression</Link></Menu.Item>
-                  <Menu.Item key="menu_multiple"><Link to="">Multiple Linear Regression</Link></Menu.Item>
+                  <Menu.Item key="menu_linear"><Link to="/linear">Linear Regression</Link></Menu.Item>
+                  <Menu.Item key="menu_poly"><Link to="/polynomial">Polynomial Regression</Link></Menu.Item>
+                  <Menu.Item key="menu_multiple"><Link to="/multiple-linear">Multiple Linear Regression</Link></Menu.Item>
                 </SubMenu>
               </Menu>
         </Drawer>
@@ -130,25 +148,25 @@ class Routes extends React.Component {
                   <Menu.Item key="menu_secant"><Link to="/secant">Secant Method</Link></Menu.Item>
                 </SubMenu>
                 <SubMenu key="algebra_submenu" title={<span>Linear Algebra</span>}>
-                  <Menu.Item key="menu_cramer"><Link to="">Cramer's Rule</Link></Menu.Item>
-                  <Menu.Item key="menu_gauss"><Link to="">Gauss's Elimination</Link></Menu.Item>
-                  <Menu.Item key="menu_jordan"><Link to="">Gauss Jordan Method</Link></Menu.Item>
-                  <Menu.Item key="menu_inverse"><Link to="">Matrix Inversion</Link></Menu.Item>
-                  <Menu.Item key="menu_lu"><Link to="">LU Decomposition</Link></Menu.Item>
-                  <Menu.Item key="menu_cholesky"><Link to="">Cholesky Decomposition</Link></Menu.Item>
-                  <Menu.Item key="menu_jacobi"><Link to="">Jacobi Iteration Method</Link></Menu.Item>
-                  <Menu.Item key="menu_seidel"><Link to="">Gauss Seidel Iteration</Link></Menu.Item>
-                  <Menu.Item key="menu_gradient"><Link to="">Conjugate Gradient Method</Link></Menu.Item>
+                  <Menu.Item key="menu_cramer"><Link to="/cramer">Cramer's Rule</Link></Menu.Item>
+                  <Menu.Item key="menu_gauss"><Link to="/gauss">Gauss's Elimination</Link></Menu.Item>
+                  <Menu.Item key="menu_jordan"><Link to="/jordan">Gauss Jordan Method</Link></Menu.Item>
+                  <Menu.Item key="menu_inverse"><Link to="/inverse">Matrix Inversion</Link></Menu.Item>
+                  <Menu.Item key="menu_lu"><Link to="/lu">LU Decomposition</Link></Menu.Item>
+                  <Menu.Item key="menu_cholesky"><Link to="/cholesky">Cholesky Decomposition</Link></Menu.Item>
+                  <Menu.Item key="menu_jacobi"><Link to="/jacobi">Jacobi Iteration Method</Link></Menu.Item>
+                  <Menu.Item key="menu_seidel"><Link to="/seidel">Gauss Seidel Iteration</Link></Menu.Item>
+                  <Menu.Item key="menu_gradient"><Link to="/conjugate-gradient">Conjugate Gradient Method</Link></Menu.Item>
                 </SubMenu>
                 <SubMenu key="interpolate_submenu" title={<span>Interpolation</span>}>
-                  <Menu.Item key="menu_divide"><Link to="">Newton Divide Difference</Link></Menu.Item>
-                  <Menu.Item key="menu_lagrange"><Link to="">Lagrange</Link></Menu.Item>
-                  <Menu.Item key="menu_spline"><Link to="">Spline</Link></Menu.Item>
+                  <Menu.Item key="menu_divide"><Link to="/newton">Newton Divide Difference</Link></Menu.Item>
+                  <Menu.Item key="menu_lagrange"><Link to="/lagrange">Lagrange</Link></Menu.Item>
+                  <Menu.Item key="menu_spline"><Link to="/spline">Spline</Link></Menu.Item>
                 </SubMenu>
                 <SubMenu key="regression_submenu" title={<span>Least Squares Regression</span>}>
-                  <Menu.Item key="menu_linear"><Link to="">Linear Regression</Link></Menu.Item>
-                  <Menu.Item key="menu_poly"><Link to="">Polynomial Regression</Link></Menu.Item>
-                  <Menu.Item key="menu_multiple"><Link to="">Multiple Linear Regression</Link></Menu.Item>
+                  <Menu.Item key="menu_linear"><Link to="/linear">Linear Regression</Link></Menu.Item>
+                  <Menu.Item key="menu_poly"><Link to="/polynomial">Polynomial Regression</Link></Menu.Item>
+                  <Menu.Item key="menu_multiple"><Link to="/multiple-linear">Multiple Linear Regression</Link></Menu.Item>
                 </SubMenu>
               </Menu>
         </Sider>
@@ -163,23 +181,23 @@ class Routes extends React.Component {
                   <Route exact path="/newton_Raphson" component={Newton_Raphson} />
                   <Route exact path="/secant" component={Secant} />
                   {/* Linear Algebra */}
-                  <Route exact path="/cramer" component={Bisection} />
-                  <Route exact path="/gauss" component={Bisection} />
-                  <Route exact path="/jordan" component={Bisection} />
-                  <Route exact path="/inverse" component={Bisection} />
-                  <Route exact path="/lu" component={Bisection} />
-                  <Route exact path="/cholesky" component={Bisection} />
-                  <Route exact path="/jacobi" component={Bisection} />
-                  <Route exact path="/seidel" component={Bisection} />
-                  <Route exact path="/conjugate-gradient" component={Bisection} />
+                  <Route exact path="/cramer" component={Cramer} />
+                  <Route exact path="/gauss" component={Gauss} />
+                  <Route exact path="/jordan" component={Jordan} />
+                  <Route exact path="/inverse" component={Inverse} />
+                  <Route exact path="/lu" component={LU} />
+                  <Route exact path="/cholesky" component={Cholesky} />
+                  <Route exact path="/jacobi" component={Jacobi} />
+                  <Route exact path="/seidel" component={Seidel} />
+                  <Route exact path="/conjugate-gradient" component={Gradient} />
                   {/* Interpolation */}
-                  <Route exact path="/newton" component={Bisection} />
-                  <Route exact path="/lagrange" component={Bisection} />
-                  <Route exact path="/spline" component={Bisection} />
+                  <Route exact path="/newton" component={NewtonInterpolate} />
+                  <Route exact path="/lagrange" component={Lagrange} />
+                  <Route exact path="/spline" component={Spline} />
                   {/* Regression */}
-                  <Route exact path="/linear" component={Bisection} />
-                  <Route exact path="/polynomial" component={Bisection} />
-                  <Route exact path="/multiple-linear" component={Bisection} />
+                  <Route exact path="/linear" component={Linear} />
+                  <Route exact path="/polynomial" component={Polynomial} />
+                  <Route exact path="/multiple-linear" component={MultipleLinear} />
                 </Switch>
               </Content>
             </Layout>

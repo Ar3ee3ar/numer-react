@@ -5,7 +5,7 @@ const api = axios.create({
 })
 
 export const getAllMovies = () => api.get(`/exams`)
-export const getMovieByName = name => api.get(`/exam/${name}`)
+export const getMovieByName = name => api.get(`/exams/${name}`)
 
 const apis = {
     getAllMovies,

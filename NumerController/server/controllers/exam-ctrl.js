@@ -17,15 +17,7 @@ const getMovieByName = async (req, res) => {
 
 const getMovies = async (req, res) => {
     await Movie.find({}, (err, movies) => {
-        console.log("Arzeezar in getMovies")
-        if (err) {
-            return res.status(400).json({ success: false, error: err })
-        }
-        if (!movies.length) {
-            return res
-                .status(404)
-                .json({ success: false, error: `!!!!!!!!!!!!!!!1111` })
-        }
+        console.log("Arzeezar in getMovies length of database is --->"+movies.length)
         return res.status(200).json({ success: true, data: movies })
     }).catch(err => console.log(err))
 }

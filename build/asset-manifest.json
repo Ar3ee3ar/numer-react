@@ -1,25 +1,25 @@
 {
   "files": {
-    "main.css": "/static/css/main.f2404066.chunk.css",
-    "main.js": "/static/js/main.f340b1b9.chunk.js",
-    "main.js.map": "/static/js/main.f340b1b9.chunk.js.map",
-    "runtime-main.js": "/static/js/runtime-main.f267e9d4.js",
-    "runtime-main.js.map": "/static/js/runtime-main.f267e9d4.js.map",
-    "static/css/2.e53444ae.chunk.css": "/static/css/2.e53444ae.chunk.css",
-    "static/js/2.472e3924.chunk.js": "/static/js/2.472e3924.chunk.js",
-    "static/js/2.472e3924.chunk.js.map": "/static/js/2.472e3924.chunk.js.map",
-    "index.html": "/index.html",
-    "precache-manifest.ba44fb2b65749e966ffe9ec637d33293.js": "/precache-manifest.ba44fb2b65749e966ffe9ec637d33293.js",
-    "service-worker.js": "/service-worker.js",
-    "static/css/2.e53444ae.chunk.css.map": "/static/css/2.e53444ae.chunk.css.map",
-    "static/css/main.f2404066.chunk.css.map": "/static/css/main.f2404066.chunk.css.map",
-    "static/js/2.472e3924.chunk.js.LICENSE.txt": "/static/js/2.472e3924.chunk.js.LICENSE.txt"
+    "main.css": "/numer-react/static/css/main.995ba42f.chunk.css",
+    "main.js": "/numer-react/static/js/main.883648c8.chunk.js",
+    "main.js.map": "/numer-react/static/js/main.883648c8.chunk.js.map",
+    "runtime-main.js": "/numer-react/static/js/runtime-main.d32b79ab.js",
+    "runtime-main.js.map": "/numer-react/static/js/runtime-main.d32b79ab.js.map",
+    "static/css/2.7938273f.chunk.css": "/numer-react/static/css/2.7938273f.chunk.css",
+    "static/js/2.08ab6c55.chunk.js": "/numer-react/static/js/2.08ab6c55.chunk.js",
+    "static/js/2.08ab6c55.chunk.js.map": "/numer-react/static/js/2.08ab6c55.chunk.js.map",
+    "index.html": "/numer-react/index.html",
+    "precache-manifest.5a3219246cb5b40827858f89cca70418.js": "/numer-react/precache-manifest.5a3219246cb5b40827858f89cca70418.js",
+    "service-worker.js": "/numer-react/service-worker.js",
+    "static/css/2.7938273f.chunk.css.map": "/numer-react/static/css/2.7938273f.chunk.css.map",
+    "static/css/main.995ba42f.chunk.css.map": "/numer-react/static/css/main.995ba42f.chunk.css.map",
+    "static/js/2.08ab6c55.chunk.js.LICENSE.txt": "/numer-react/static/js/2.08ab6c55.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
-    "static/js/runtime-main.f267e9d4.js",
-    "static/css/2.e53444ae.chunk.css",
-    "static/js/2.472e3924.chunk.js",
-    "static/css/main.f2404066.chunk.css",
-    "static/js/main.f340b1b9.chunk.js"
+    "static/js/runtime-main.d32b79ab.js",
+    "static/css/2.7938273f.chunk.css",
+    "static/js/2.08ab6c55.chunk.js",
+    "static/css/main.995ba42f.chunk.css",
+    "static/js/main.883648c8.chunk.js"
   ]
 }
