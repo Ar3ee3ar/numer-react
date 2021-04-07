@@ -1,6 +1,6 @@
 {
   "homepage": "https://ar3ee3ar.github.io/numer-react/",
-  "name": "numer-react",
+  "name": "react-sidebar",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -15,6 +15,7 @@
     "bootstrap": "^4.6.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",
+    "gh-pages": "^3.1.0",
     "mathjs": "^9.2.0",
     "mongodb": "^3.6.5",
     "mongoose": "^5.12.3",
