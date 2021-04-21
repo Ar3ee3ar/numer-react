@@ -34,9 +34,11 @@ jobs:
       working-directory: ./NumerController/server
       run: npm install
       
-    - name: Start server
-      working-directory: ./NumerController/server
-      run: npm run start
+    - name: Start server for e2e tests
+      run: npm run start &
+      env:
+          MONGODB_URL: ${{ secrets.MONGODB_URL }}
+          wait-on: http://localhost:8080
 
     - name: Deploy
       run: |
