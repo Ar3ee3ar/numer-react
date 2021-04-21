@@ -27,6 +27,22 @@ jobs:
     - name: Install dependencies
       run: npm install
 
+    - name: Install client dependencies
+      working-directory: ./NumerController/server
+      run: npm install
+      
+    - name: Start server for e2e tests
+      run: npm run start &
+      env:
+          MONGODB_URL: ${{ secrets.MONGODB_URL }}
+    - name: Cypress run
+      uses: cypress-io/github-action@v1
+      with:
+        working-directory: NumerController/server
+        build: npm run build
+        start: npm run start
+        wait-on: http://localhost:8080
+      
     - name: Build
       run: npm run build
 
