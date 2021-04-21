@@ -26,7 +26,10 @@ jobs:
 
     - name: Install dependencies
       run: npm install
-
+      
+    - name: Build
+      run: npm run build
+      
     - name: Install client dependencies
       working-directory: ./NumerController/server
       run: npm install
@@ -35,16 +38,7 @@ jobs:
       run: npm run start &
       env:
           MONGODB_URL: ${{ secrets.MONGODB_URL }}
-    - name: Cypress run
-      uses: cypress-io/github-action@v1
-      with:
-        working-directory: NumerController/server
-        build: npm run build
-        start: npm run start
-        wait-on: http://localhost:8080
-      
-    - name: Build
-      run: npm run build
+          wait-on: http://localhost:8080
 
     - name: Deploy
       run: |
